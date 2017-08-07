@@ -1,0 +1,27 @@
+﻿@model IList<BalanceSheet.Models.BookingViewModels>
+
+@{
+    var ItemCount = 0;
+}
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>#</th>
+        <th>類別</th>
+        <th>日期</th>
+        <th>金額</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @{
+                ItemCount++;
+            }
+            <td>@ItemCount</td>
+            <td>@item.Kind</td>
+            <td>@item.Date</td>
+            <td>@item.Amount</td>
+        </tr>
+    }
+</table>
+
