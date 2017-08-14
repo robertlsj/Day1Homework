@@ -14,13 +14,10 @@
     @foreach (var item in Model)
     {
         <tr>
-            @{
-                ItemCount++;
-            }
-            <td>@ItemCount</td>
-            <td>@item.Kind</td>
-            <td>@item.Date</td>
-            <td>@item.Amount</td>
+            <td>@(++ItemCount)</td>
+            <td>@Html.DisplayFor(m => item.Kind)</td>
+            <td>@Html.DisplayFor(m => item.Date)</td>
+            <td>@Html.DisplayFor(m => item.Amount)</td>
         </tr>
     }
 </table>
