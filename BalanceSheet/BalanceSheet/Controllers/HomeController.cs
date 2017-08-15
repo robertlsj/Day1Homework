@@ -4,19 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BalanceSheet.Models;
+using BalanceSheet.Service;
 using System.Data.Entity;
 
 namespace BalanceSheet.Controllers
 {
     public class HomeController : Controller
     {
-
+        private readonly BalanceSheetService _balanceService;
         private List<SelectListItem> kindList = new List<SelectListItem>();
-        private BalanceSheetContext context;
 
         public HomeController()
         {
-            context = new BalanceSheetContext();
+            _balanceService = new Service.BalanceSheetService();
             kindList.AddRange(new [] { 
                 new SelectListItem() { Text = "支出", Value = "0" },
                 new SelectListItem() { Text = "收入", Value = "1" }
@@ -31,8 +31,8 @@ namespace BalanceSheet.Controllers
         [ChildActionOnly]
         public ActionResult BalanceList()
         {
-            var result = context.AccountBooks.AsEnumerable().Select(m => new BookingViewModels()
-            {
+            var result = _balanceService.GetAll().Select(m => new BookingViewModels()
+            { 
                 Kind = kindList.Where(x => x.Value == m.Categoryyy.ToString()).First().Text,
                 Amount = m.Amounttt,
                 Date = m.Dateee.ToString("yyyy-MM-dd")
