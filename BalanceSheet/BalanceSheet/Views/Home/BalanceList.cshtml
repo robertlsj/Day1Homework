@@ -1,4 +1,4 @@
-﻿@model IList<BalanceSheet.Models.BookingViewModels>
+﻿@model IEnumerable<BalanceSheet.Models.BookingViewModels>
 
 @{
     var ItemCount = 0;
@@ -7,9 +7,9 @@
 <table class="table table-bordered table-hover">
     <tr>
         <th>#</th>
-        <th>@Html.DisplayNameFor(m => Model.First().Kind)</th>
-        <th>@Html.DisplayNameFor(m => Model.First().Date)</th>
-        <th>@Html.DisplayNameFor(m => Model.First().Amount)</th>
+        <th>@Html.DisplayNameFor(model => model.Kind)</th>
+        <th>@Html.DisplayNameFor(model => model.Date)</th>
+        <th>@Html.DisplayNameFor(model => model.Amount)</th>
     </tr>
     @foreach (var item in Model)
     {

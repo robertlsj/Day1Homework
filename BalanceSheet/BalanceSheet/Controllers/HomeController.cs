@@ -5,22 +5,18 @@ using System.Web;
 using System.Web.Mvc;
 using BalanceSheet.Models;
 using BalanceSheet.Service;
-using System.Data.Entity;
+using BalanceSheet.Repositories;
 
 namespace BalanceSheet.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly BalanceSheetService _balanceService;
-        private List<SelectListItem> kindList = new List<SelectListItem>();
+        private readonly BalanceSheetService _balanceSheetService;
 
         public HomeController()
         {
-            _balanceService = new Service.BalanceSheetService();
-            kindList.AddRange(new [] { 
-                new SelectListItem() { Text = "支出", Value = "0" },
-                new SelectListItem() { Text = "收入", Value = "1" }
-            });
+            var unitOfWork = new EFUnitOfWork();
+            _balanceSheetService = new Service.BalanceSheetService(unitOfWork);
         }
 
         public ActionResult Index()
@@ -31,13 +27,15 @@ namespace BalanceSheet.Controllers
         [ChildActionOnly]
         public ActionResult BalanceList()
         {
-            var result = _balanceService.GetAll().Select(m => new BookingViewModels()
-            { 
-                Kind = kindList.Where(x => x.Value == m.Categoryyy.ToString()).First().Text,
-                Amount = m.Amounttt,
-                Date = m.Dateee.ToString("yyyy-MM-dd")
-            }).OrderBy(m => m.Date).ToList();
+            var result = _balanceSheetService.GetAll();
             return View(result);
+        }
+
+        [ChildActionOnly]
+        public ActionResult BalanceListQry(BookingViewModels bookingViewModels)
+        {
+            var result = _balanceSheetService.Query(m => m.Categoryyy == 0 && m.Amounttt > 10000);
+            return View("BalanceList", result);
         }
 
         public ActionResult About()
