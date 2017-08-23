@@ -1,47 +1,46 @@
-﻿@{
+﻿@model BalanceSheet.Models.BookingViewModels
+@{
     ViewBag.Title = "Home Page";
 }
+
 <div>
     <div class="well">
-        <form class="form-horizontal">
+        @using (Html.BeginForm(actionName: "Create", controllerName: "Home", method: FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+        { 
             <div class="form-group" style="margin-top: 40px">
-                <label for="category" class="col-sm-2 control-label">類別</label>
+                @Html.LabelFor(model => model.Kind, htmlAttributes: new { @class = "control-label col-sm-2" })
                 <div class="col-sm-10">
-                    <select id="category" class="form-control">
-                        <option value="" selected>請選擇</option>
-                        <option>支出</option>
-                        <option>收入</option>
-                    </select>
+                    @Html.EnumDropDownListFor(model => model.Kind, new { @class="form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="money" class="col-sm-2 control-label">金額</label>
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class="control-label col-sm-2" })
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="money" placeholder="金額">
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class= "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="date" class="col-sm-2 control-label">日期</label>
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-sm-2" })
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="date" placeholder="日期">
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class="form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="description" class="col-sm-2 control-label">備註</label>
+                @Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "control-label col-sm-2" })
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="description"></textarea>
+                    @Html.TextAreaFor(m => m.Remark, new { @class = "form-control"})
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-8 col-sm-4">
-                    <button type="submit" class="btn btn-default">送出</button>
+                    <input type="submit" value="送出" class="btn btn-primary" />
                 </div>
             </div>
-        </form>
+        }
     </div>
+
     <div class="row">
         @Html.Action("BalanceList")
         @*Html.Action("BalanceListQry")*@
     </div>
 </div>
-@Html.Partial("_FooterLayout")

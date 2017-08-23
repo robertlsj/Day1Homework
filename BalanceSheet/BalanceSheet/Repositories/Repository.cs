@@ -38,5 +38,20 @@ namespace BalanceSheet.Repositories
         {
             return ObjectSet.Where(filter);
         }
+
+        public void Create(T instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("無資料可新增");
+            }
+            UnitOfWork.context.Set<T>().Add(instance);
+            this.SaveChange();
+        }
+
+        public void SaveChange()
+        {
+            UnitOfWork.context.SaveChanges();
+        }
     }
 }

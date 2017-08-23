@@ -27,11 +27,12 @@ namespace BalanceSheet.Service
         public IEnumerable<BookingViewModels> GetAll()
         {
             var source = accountBookRepository.GetAll();
-            var result = source.OrderBy(m => m.Dateee).ToList().Select(m => new BookingViewModels()
+            var result = source.OrderBy(m => m.Dateee).OrderByDescending(m => m.Dateee).ToList().Select(m => new BookingViewModels()
             {
-                Kind = kindList.Where(x => x.Value == m.Categoryyy.ToString()).First().Text,
+                Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
-                Date = m.Dateee.ToString("yyyy-MM-dd")
+                Date = m.Dateee.ToString("yyyy-MM-dd"),
+                Remark = m.Remarkkk
             });
 
             return result;
@@ -42,11 +43,23 @@ namespace BalanceSheet.Service
             var source = accountBookRepository.Query(filter);
             var result = source.ToList().Select(m => new BookingViewModels()
             {
-                Kind = kindList.Where(x => x.Value == m.Categoryyy.ToString()).First().Text,
+                Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
-                Date = m.Dateee.ToString("yyyy-MM-dd")
+                Date = m.Dateee.ToString("yyyy-MM-dd"),
+                Remark = m.Remarkkk
             });
             return result;  
+        }
+
+        public void Create(BookingViewModels booking)
+        {
+            var thisbooking = new AccountBook();
+            thisbooking.Id = Guid.NewGuid();
+            thisbooking.Amounttt = booking.Amount;
+            thisbooking.Categoryyy = (int)booking.Kind;
+            thisbooking.Dateee = Convert.ToDateTime(booking.Date);
+            thisbooking.Remarkkk = booking.Remark;
+            accountBookRepository.Create(thisbooking);
         }
     }
 }

@@ -12,6 +12,11 @@ namespace BalanceSheet.Controllers
     public class HomeController : Controller
     {
         private readonly BalanceSheetService _balanceSheetService;
+        public enum AccoundKinds
+        { 
+            支出,
+            收入
+        }
 
         public HomeController()
         {
@@ -24,11 +29,22 @@ namespace BalanceSheet.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Create(BookingViewModels booking)
+        {
+            if (ModelState.IsValid)
+            {
+                _balanceSheetService.Create(booking);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [ChildActionOnly]
         public ActionResult BalanceList()
         {
             var result = _balanceSheetService.GetAll();
-            return View(result);
+            return PartialView(result);
         }
 
         [ChildActionOnly]
