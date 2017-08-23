@@ -12,11 +12,6 @@ namespace BalanceSheet.Controllers
     public class HomeController : Controller
     {
         private readonly BalanceSheetService _balanceSheetService;
-        public enum AccoundKinds
-        { 
-            支出,
-            收入
-        }
 
         public HomeController()
         {

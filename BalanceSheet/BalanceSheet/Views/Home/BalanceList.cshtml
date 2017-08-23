@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<BalanceSheet.Models.BookingViewModels>
+@using BalanceSheet.Views
 
 @{
     var ItemCount = 0;
@@ -16,7 +17,7 @@
     {
         <tr>
             <td>@(++ItemCount)</td>
-            <td>@Html.DisplayFor(m => item.Kind)</td>
+            <td><span style="@(Html.IsIncome(item.Kind) ? "color:blue" : "color:red")">@Html.DisplayFor(m => item.Kind)</span></td>
             <td>@Html.DisplayFor(m => item.Date)</td>
             <td>@Html.DisplayFor(m => item.Amount)</td>
             <td>@Html.TextAreaFor(m => item.Remark, new { @class="form-control" })</td>
