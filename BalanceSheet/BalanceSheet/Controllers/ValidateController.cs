@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BalanceSheet.Models;
 
 namespace BalanceSheet.Controllers
 {
     public class ValidateController : Controller
     {
-        public ActionResult GreaterThenZero(int Amount)
+        public ActionResult GreaterThenbasenum(int Amount, int basenum)
         {
-            bool isValidate = (Amount > 0);
+            bool isValidate = (Amount > basenum);
             return Json(isValidate, JsonRequestBehavior.AllowGet);
         }
     }

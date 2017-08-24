@@ -19,10 +19,13 @@ namespace BalanceSheet.Models
         public string Date { get; set; }
 
         [Required]
-        [Remote("GreaterThenZero", "Validate", ErrorMessage ="{0}必須大於0")]
+        [Remote("GreaterThenbasenum", "Validate",AdditionalFields = "basenum", ErrorMessage ="{0}必須大於0")]
         [Display(Name = "金額")]
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
         public int Amount { get; set; }
+
+        //用來做為驗證Amount是否大於basenum
+        public int basenum { get; set; }
 
         [Required]
         [Display(Name = "備註")]
