@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace BalanceSheet.Models
 {
@@ -18,6 +19,7 @@ namespace BalanceSheet.Models
         public string Date { get; set; }
 
         [Required]
+        [Remote("GreaterThenZero", "Validate", ErrorMessage ="{0}必須大於0")]
         [Display(Name = "金額")]
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
         public int Amount { get; set; }
