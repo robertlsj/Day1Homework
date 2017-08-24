@@ -14,6 +14,7 @@ namespace BalanceSheet.Models
 
         [Required]
         [Display(Name = "日期")]
+        [EarlierThenToday(ErrorMessage = "{0}不能大於今天")]
         public string Date { get; set; }
 
         [Required]
@@ -23,6 +24,7 @@ namespace BalanceSheet.Models
 
         [Required]
         [Display(Name = "備註")]
+        [StringLength(maximumLength:100,ErrorMessage ="{0}最多輸入{1}個字")]
         public string Remark { get; set; }
     }
 }
