@@ -11,7 +11,7 @@ namespace BalanceSheet.Views
     {
         public static bool IsIncome(this HtmlHelper helper, AccountEnum kind)
         {
-            if ((int)kind == 0)
+            if (kind == AccountEnum.支出)
             {
                 return false;
             }

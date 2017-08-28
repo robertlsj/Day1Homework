@@ -1,9 +1,21 @@
 ﻿@model IEnumerable<BalanceSheet.Models.BookingViewModels>
 @using BalanceSheet.Views
+@using BalanceSheet.Models
 
 @{
     var ItemCount = 0;
 }
+
+@helper ColoredText(AccountEnum kind) {
+    if (Html.IsIncome(kind))
+    {
+        <span style="color: blue" )">@kind.ToString()</span>
+    }
+    else
+    {
+        <span style="color: red" )">@kind.ToString()</span>
+    }
+}  
 
 <table class="table table-bordered table-hover">
     <tr>
@@ -17,7 +29,7 @@
     {
         <tr>
             <td>@(++ItemCount)</td>
-            <td><span style="@(Html.IsIncome(item.Kind) ? "color:blue" : "color:red")">@Html.DisplayFor(m => item.Kind)</span></td>
+            <td>@ColoredText(item.Kind)</td>
             <td>@Html.DisplayFor(m => item.Date)</td>
             <td>@Html.DisplayFor(m => item.Amount)</td>
             <td>@Html.TextAreaFor(m => item.Remark, new { @class="form-control" })</td>

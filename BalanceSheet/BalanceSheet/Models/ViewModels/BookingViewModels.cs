@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BalanceSheet.Controllers;
 
 namespace BalanceSheet.Models
 {
@@ -19,7 +20,8 @@ namespace BalanceSheet.Models
         public string Date { get; set; }
 
         [Required]
-        [Remote("GreaterThenbasenum", "Validate",AdditionalFields = "basenum", ErrorMessage ="{0}必須大於0")]
+        //[Remote("GreaterThenbasenum", "Validate",AdditionalFields = "basenum", ErrorMessage ="{0}必須大於0")]
+        [RemoteDoublePlus("GreaterThenbasenum", "Validate", null, AdditionalFields = "basenum", ErrorMessage ="{0}必須大於0")]
         [Display(Name = "金額")]
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
         public int Amount { get; set; }

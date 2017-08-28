@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Extensions\AccountExtensions.cs" />
+    <Compile Include="Extensions\RemoteDoublePlusAttribute.cs" />
     <Compile Include="Extensions\ValidExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

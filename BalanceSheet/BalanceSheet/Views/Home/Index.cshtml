@@ -17,7 +17,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class="control-label col-sm-2" })
                 <div class="col-sm-10">
-                    @Html.HiddenFor(model => model.basenum)
+                    @Html.Hidden("basenum", "0")
                     @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class= "form-control" } })
                     @Html.ValidationMessageFor(model => model.Amount)
                 </div>
@@ -50,25 +50,24 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section scripts{
+
     <script type="text/javascript">
-        $('#basenum').val(0);
-        jQuery.validator.addMethod('earlierthentoday', function (value, element, param) {
-            var today = Date.parse(new Date());
-            var thedate = Date.parse(value);
-            if (thedate > today) {
-                return false;
+    jQuery.validator.addMethod('earlierthentoday', function (value, element, param) {
+        var today = Date.parse(new Date());
+        var thedate = Date.parse(value);
+        if (thedate > today) {
+            return false;
+        }
+        else { return true; }
+    });
+    jQuery.validator.unobtrusive.adapters.add(
+        'earlierthentoday', function (options) {
+            options.rules['earlierthentoday'] = '#' + options.params.other;
+            if (options.message) {
+                options.messages['earlierthentoday'] = options.message;
             }
-            else { return true; }
         });
-        jQuery.validator.unobtrusive.adapters.add(
-            'earlierthentoday', function (options) {
-                options.rules['earlierthentoday'] = '#' + options.params.other;
-                if (options.message) {
-                    options.messages['earlierthentoday'] = options.message;
-                }
-            });
     </script>
 }
 
