@@ -17,6 +17,7 @@ namespace BalanceSheet.Models
         [Required]
         [Display(Name = "日期")]
         [EarlierThenToday(ErrorMessage = "{0}不能大於今天")]
+        [UIHint("AccountDateTime")] 
         public string Date { get; set; }
 
         [Required]

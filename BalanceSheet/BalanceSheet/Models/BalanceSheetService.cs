@@ -31,7 +31,7 @@ namespace BalanceSheet.Service
             {
                 Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
-                Date = m.Dateee.ToString("yyyy-MM-dd"),
+                Date = m.Dateee.ToString(),
                 Remark = m.Remarkkk
             });
 
@@ -45,7 +45,7 @@ namespace BalanceSheet.Service
             {
                 Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
-                Date = m.Dateee.ToString("yyyy-MM-dd"),
+                Date = m.Dateee.ToString(),
                 Remark = m.Remarkkk
             });
             return result;  

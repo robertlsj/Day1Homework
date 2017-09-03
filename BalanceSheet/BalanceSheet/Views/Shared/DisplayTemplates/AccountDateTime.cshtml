@@ -1,0 +1,7 @@
+﻿@model string
+
+@{
+    DateTime _datetime;
+    DateTime.TryParse(Model, out _datetime);
+    @_datetime.ToString("yyyy-MM-dd");
+}
