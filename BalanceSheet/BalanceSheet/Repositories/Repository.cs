@@ -49,6 +49,26 @@ namespace BalanceSheet.Repositories
             this.SaveChange();
         }
 
+        public void Delete(T instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("無資料可刪");
+            }
+            UnitOfWork.context.Set<T>().Remove(instance);
+            this.SaveChange();
+        }
+
+        public void Edit(T instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("無資料可更新");
+            }
+            UnitOfWork.context.Entry<T>(instance).State = EntityState.Modified;
+            this.SaveChange();
+        }
+
         public void SaveChange()
         {
             UnitOfWork.context.SaveChanges();

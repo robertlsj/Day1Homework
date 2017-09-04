@@ -3,8 +3,6 @@
     ViewBag.Title = "Home Page";
 }
 
-<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-
 <div>
     <div class="well">
         @using (Html.BeginForm(actionName: "Create", controllerName: "Home", method: FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
@@ -47,7 +45,14 @@
     </div>
 
     <div class="row">
-        @Html.Action("BalanceList")
+        @if (ViewBag.role == "Users")
+        {
+            @Html.Action("BalanceList");
+        }
+        else
+        {
+            @Html.Action("BalanceListAdmin", "Admin",  new {area = "Admin"});
+        }
         @*Html.Action("BalanceListQry")*@
     </div>
 </div>

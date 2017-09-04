@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using BalanceSheet.Models;
 using BalanceSheet.Service;
 using BalanceSheet.Repositories;
@@ -17,10 +18,31 @@ namespace BalanceSheet.Controllers
         {
             var unitOfWork = new EFUnitOfWork();
             _balanceSheetService = new Service.BalanceSheetService(unitOfWork);
+        } 
+
+        public ActionResult Login()
+        { 
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(UserViewModel model)
+        {
+            Session["username"] = model.UserName;
+            if (_balanceSheetService.UserIsAdmin(model.UserName))
+            {
+                ViewBag.role = "Admin";
+            }
+            else
+            {
+                ViewBag.role = "Users";
+            }
+            return View("Index");
         }
 
         public ActionResult Index()
         {
+            if (Session["username"] == null) return RedirectToAction("Login", new { controller = "Home", area = "" });
             return View();
         }
 
@@ -32,14 +54,14 @@ namespace BalanceSheet.Controllers
                 _balanceSheetService.Create(booking);
             }
 
-            return RedirectToAction("Index");
+            return View("Index");
         }
 
         [ChildActionOnly]
         public ActionResult BalanceList()
         {
-            var result = _balanceSheetService.GetAll();
-            return PartialView(result);
+               var result = _balanceSheetService.GetAll();
+               return PartialView(result);
         }
 
         [ChildActionOnly]

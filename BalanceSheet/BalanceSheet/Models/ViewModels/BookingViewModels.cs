@@ -10,6 +10,8 @@ namespace BalanceSheet.Models
 {
     public class BookingViewModels
     {
+        public string Id { get; set; }
+
         [Required]
         [Display(Name = "類別")]
         public AccountEnum Kind { get; set; }

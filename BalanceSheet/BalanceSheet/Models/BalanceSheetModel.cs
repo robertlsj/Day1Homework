@@ -17,5 +17,7 @@ namespace BalanceSheet.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
         }
+
+        public System.Data.Entity.DbSet<BalanceSheet.Models.BookingViewModels> BookingViewModels { get; set; }
     }
 }

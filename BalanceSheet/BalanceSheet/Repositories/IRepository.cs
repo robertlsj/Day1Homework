@@ -20,5 +20,9 @@ namespace BalanceSheet.Repositories
 
         //新增資料
         void Create(T instance);
+
+        void Delete(T instance);
+
+        void Edit(T instance);
     }
 }

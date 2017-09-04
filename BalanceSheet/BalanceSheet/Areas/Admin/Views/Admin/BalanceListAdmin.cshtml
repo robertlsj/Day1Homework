@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BalanceSheet.Models.BookingViewModels>
+@using BalanceSheet.Views
+@using BalanceSheet.Models
+
+@{
+    var ItemCount = 0;
+}
+
+@helper ColoredText(AccountEnum kind)
+{
+    if (Html.IsIncome(kind))
+    {
+        <span style="color: blue" )">@kind.ToString()</span>
+    }
+    else
+    {
+        <span style="color: red" )">@kind.ToString()</span>
+    }
+}
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th class="col-md-1">#</th>
+        <th class="col-md-1">@Html.DisplayNameFor(model => model.Kind)</th>
+        <th class="col-md-2">@Html.DisplayNameFor(model => model.Date)</th>
+        <th class="col-md-2">@Html.DisplayNameFor(model => model.Amount)</th>
+        <th class="col-md-4">@Html.DisplayNameFor(model => model.Remark)</th>
+        <th class="col-md-2"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@(++ItemCount)</td>
+            <td>@ColoredText(item.Kind)</td>
+            <td>@Html.DisplayFor(m => item.Date)</td>
+            <td>@Html.DisplayFor(m => item.Amount)</td>
+            <td>@Html.TextAreaFor(m => item.Remark, new { @class = "form-control" })</td>
+            <td>
+                @Html.ActionLink("編輯", "Edit", new { area = "Admin", id = item.Id }) |
+                @Html.ActionLink("刪除", "Delete", new { area = "Admin", id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+

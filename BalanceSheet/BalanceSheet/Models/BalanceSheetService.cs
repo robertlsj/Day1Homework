@@ -14,6 +14,8 @@ namespace BalanceSheet.Service
         private List<SelectListItem> kindList = new List<SelectListItem>();
         private readonly IRepository<AccountBook> accountBookRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private UserViewModel User;
+
         public BalanceSheetService(IUnitOfWork unitOfWork)
         {
             kindList.AddRange(new[] {
@@ -22,6 +24,17 @@ namespace BalanceSheet.Service
             });
             accountBookRepository = new Repository<AccountBook>(unitOfWork);
             _unitOfWork = unitOfWork;
+
+            User = new Models.UserViewModel() {
+                UserName="robert",
+                password = "1234",
+                role = "admin"
+            };
+        }
+
+        public bool UserIsAdmin(string _name)
+        {
+            return (User.UserName == _name) ? true : false; 
         }
 
         public IEnumerable<BookingViewModels> GetAll()
@@ -29,6 +42,7 @@ namespace BalanceSheet.Service
             var source = accountBookRepository.GetAll();
             var result = source.OrderBy(m => m.Dateee).OrderByDescending(m => m.Dateee).ToList().Select(m => new BookingViewModels()
             {
+                Id = m.Id.ToString(),
                 Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
                 Date = m.Dateee.ToString(),
@@ -43,6 +57,7 @@ namespace BalanceSheet.Service
             var source = accountBookRepository.Query(filter);
             var result = source.ToList().Select(m => new BookingViewModels()
             {
+                Id = m.Id.ToString(),
                 Kind = (AccountEnum)m.Categoryyy,
                 Amount = m.Amounttt,
                 Date = m.Dateee.ToString(),
@@ -60,6 +75,22 @@ namespace BalanceSheet.Service
             thisbooking.Dateee = Convert.ToDateTime(booking.Date);
             thisbooking.Remarkkk = booking.Remark;
             accountBookRepository.Create(thisbooking);
+        }
+
+        public void Delete(BookingViewModels model)
+        {
+            var result = accountBookRepository.Query(m => m.Id.ToString() == model.Id).FirstOrDefault();
+            accountBookRepository.Delete(result);
+        }
+
+        public void Edit(BookingViewModels model)
+        {
+            var result = accountBookRepository.Query(m => m.Id.ToString() == model.Id).FirstOrDefault();
+            result.Amounttt = model.Amount;
+            result.Categoryyy = (int)model.Kind;
+            result.Dateee = DateTime.Parse(model.Date);
+            result.Remarkkk = model.Remark;
+            accountBookRepository.Edit(result);
         }
     }
 }
