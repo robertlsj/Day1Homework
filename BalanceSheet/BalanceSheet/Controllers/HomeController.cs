@@ -12,6 +12,8 @@ using PagedList;
 
 namespace BalanceSheet.Controllers
 {
+    [RoutePrefix("skilltree")]
+    [Route("{action=index}")]
     public class HomeController : Controller
     {
         private readonly BalanceSheetService _balanceSheetService;
