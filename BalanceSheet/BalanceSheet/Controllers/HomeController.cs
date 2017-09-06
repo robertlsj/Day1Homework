@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,12 +8,14 @@ using System.Web.Mvc.Html;
 using BalanceSheet.Models;
 using BalanceSheet.Service;
 using BalanceSheet.Repositories;
+using PagedList;
 
 namespace BalanceSheet.Controllers
 {
     public class HomeController : Controller
     {
         private readonly BalanceSheetService _balanceSheetService;
+        private int pagesize = 10;
 
         public HomeController()
         {
@@ -56,12 +59,21 @@ namespace BalanceSheet.Controllers
 
             return View("Index");
         }
-
         [ChildActionOnly]
-        public ActionResult BalanceList()
+        public ActionResult BalanceList(int page = 1)
         {
-               var result = _balanceSheetService.GetAll();
-               return PartialView(result);
+            int currentPage = page;
+            var result = _balanceSheetService.GetAll().OrderByDescending(m => m.Dateee).ToList().Select(m =>
+                new BookingViewModels()
+                {
+                    Id = m.Id.ToString(),
+                    Kind = (AccountEnum)m.Categoryyy,
+                    Amount = m.Amounttt,
+                    Date = m.Dateee.ToString(),
+                    Remark = m.Remarkkk
+                }).ToPagedList(currentPage, pagesize);
+
+            return PartialView(result);
         }
 
         [ChildActionOnly]

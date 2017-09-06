@@ -45,7 +45,7 @@
     </div>
 
     <div class="row">
-        @if (ViewBag.role == "Users")
+        @if (ViewBag.role == "Users" || ViewBag.role == null)
         {
             @Html.Action("BalanceList");
         }

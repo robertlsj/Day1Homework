@@ -1,6 +1,9 @@
-﻿@model IEnumerable<BalanceSheet.Models.BookingViewModels>
-@using BalanceSheet.Views
+﻿@using BalanceSheet.Views
 @using BalanceSheet.Models
+@using PagedList
+@using PagedList.Mvc
+
+@model IPagedList<BalanceSheet.Models.BookingViewModels>
 
 @{
     var ItemCount = 0;
@@ -20,10 +23,10 @@
 <table class="table table-bordered table-hover">
     <tr>
         <th class="col-md-1">#</th>
-        <th class="col-md-1">@Html.DisplayNameFor(model => model.Kind)</th>
-        <th class="col-md-2">@Html.DisplayNameFor(model => model.Date)</th>
-        <th class="col-md-2">@Html.DisplayNameFor(model => model.Amount)</th>
-        <th class="col-md-6">@Html.DisplayNameFor(model => model.Remark)</th>
+        <th class="col-md-1">@Html.DisplayNameFor(model => model.FirstOrDefault().Kind)</th>
+        <th class="col-md-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Date)</th>
+        <th class="col-md-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Amount)</th>
+        <th class="col-md-6">@Html.DisplayNameFor(model => model.FirstOrDefault().Remark)</th>
     </tr>
     @foreach (var item in Model)
     {
@@ -36,3 +39,9 @@
         </tr>
     }
 </table>
+@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {area="", page}))
+
+@section scripts
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+}

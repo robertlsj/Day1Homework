@@ -37,18 +37,9 @@ namespace BalanceSheet.Service
             return (User.UserName == _name) ? true : false; 
         }
 
-        public IEnumerable<BookingViewModels> GetAll()
+        public IQueryable<AccountBook> GetAll()
         {
-            var source = accountBookRepository.GetAll();
-            var result = source.OrderBy(m => m.Dateee).OrderByDescending(m => m.Dateee).ToList().Select(m => new BookingViewModels()
-            {
-                Id = m.Id.ToString(),
-                Kind = (AccountEnum)m.Categoryyy,
-                Amount = m.Amounttt,
-                Date = m.Dateee.ToString(),
-                Remark = m.Remarkkk
-            });
-
+            var result = accountBookRepository.GetAll();
             return result;
         }
 
