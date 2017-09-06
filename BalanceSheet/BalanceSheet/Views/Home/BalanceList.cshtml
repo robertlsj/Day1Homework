@@ -39,7 +39,14 @@
         </tr>
     }
 </table>
-@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {area="", page}))
+@if (ViewBag.year == null && ViewBag.month == null)
+{
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {area = "", page}));
+}
+else
+{
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Home", new { area = "", yyyy = ViewBag.year, mm = ViewBag.month, page}));
+}
 
 @section scripts
 {

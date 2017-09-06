@@ -43,17 +43,9 @@ namespace BalanceSheet.Service
             return result;
         }
 
-        public IEnumerable<BookingViewModels> Query(Expression<Func<AccountBook, bool>> filter)
+        public IQueryable<AccountBook> Query(Expression<Func<AccountBook, bool>> filter)
         {
-            var source = accountBookRepository.Query(filter);
-            var result = source.ToList().Select(m => new BookingViewModels()
-            {
-                Id = m.Id.ToString(),
-                Kind = (AccountEnum)m.Categoryyy,
-                Amount = m.Amounttt,
-                Date = m.Dateee.ToString(),
-                Remark = m.Remarkkk
-            });
+            var result = accountBookRepository.Query(filter);
             return result;  
         }
 

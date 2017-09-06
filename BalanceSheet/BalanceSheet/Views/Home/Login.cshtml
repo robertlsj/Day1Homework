@@ -2,15 +2,17 @@
 
 @{
     ViewBag.Title = "Login";
+    var year = ViewBag.year;
+    var month = ViewBag.month;
+    
 }
 
 <div class="row" style="margin-top: 60px;">
     <div class="col-md-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Home", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Home", new { year = year, month = month}, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-            @Html.AntiForgeryToken()
-
+                @Html.AntiForgeryToken()
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">

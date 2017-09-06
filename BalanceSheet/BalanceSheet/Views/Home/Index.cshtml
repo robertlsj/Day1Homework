@@ -47,7 +47,14 @@
     <div class="row">
         @if (ViewBag.role == "Users" || ViewBag.role == null)
         {
-            @Html.Action("BalanceList");
+            if (ViewBag.year == null && ViewBag.month == null)
+            {
+                @Html.Action("BalanceList");
+            }
+            else
+            {
+                @Html.Action("BalanceListQry", new {year = ViewBag.year, month = ViewBag.month});
+            }
         }
         else
         {

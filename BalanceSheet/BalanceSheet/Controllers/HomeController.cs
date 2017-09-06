@@ -10,10 +10,11 @@ using BalanceSheet.Service;
 using BalanceSheet.Repositories;
 using PagedList;
 
+
 namespace BalanceSheet.Controllers
 {
     [RoutePrefix("skilltree")]
-    [Route("{action=index}")]
+    [Route("{action=Index}")]
     public class HomeController : Controller
     {
         private readonly BalanceSheetService _balanceSheetService;
@@ -25,13 +26,15 @@ namespace BalanceSheet.Controllers
             _balanceSheetService = new Service.BalanceSheetService(unitOfWork);
         } 
 
-        public ActionResult Login()
-        { 
+        public ActionResult Login(string year, string month)
+        {
+            ViewBag.year = year;
+            ViewBag.month = month;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(UserViewModel model)
+        public ActionResult Login(UserViewModel model, string year, string month)
         {
             Session["username"] = model.UserName;
             if (_balanceSheetService.UserIsAdmin(model.UserName))
@@ -42,12 +45,23 @@ namespace BalanceSheet.Controllers
             {
                 ViewBag.role = "Users";
             }
+            ViewBag.year = year;
+            ViewBag.month = month;
             return View("Index");
         }
 
         public ActionResult Index()
         {
             if (Session["username"] == null) return RedirectToAction("Login", new { controller = "Home", area = "" });
+            return View();
+        }
+
+        [Route("{yyyy:int}/{mm:int}")]
+        public ActionResult Index(string yyyy, string mm)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", new { controller = "Home", area = "", year = yyyy, month = mm });
+            ViewBag.year = yyyy;
+            ViewBag.month = mm;
             return View();
         }
 
@@ -61,6 +75,7 @@ namespace BalanceSheet.Controllers
 
             return View("Index");
         }
+
         [ChildActionOnly]
         public ActionResult BalanceList(int page = 1)
         {
@@ -79,10 +94,24 @@ namespace BalanceSheet.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult BalanceListQry(BookingViewModels bookingViewModels)
+        public ActionResult BalanceListQry(string year, string month, int page = 1)
         {
-            var result = _balanceSheetService.Query(m => m.Categoryyy == 0 && m.Amounttt > 10000);
-            return View("BalanceList", result);
+            int currentPage = page;
+            var beginDate = new DateTime(Int16.Parse(year), Int16.Parse(month), 1);
+            var endDate = new DateTime(Int16.Parse(year), Int16.Parse(month), DateTime.DaysInMonth(Int16.Parse(year), Int16.Parse(month)));
+            var result = _balanceSheetService.Query(m => m.Dateee >= beginDate && m.Dateee <= endDate).ToList().Select(m =>
+                new BookingViewModels()
+                {
+                    Id = m.Id.ToString(),
+                    Kind = (AccountEnum)m.Categoryyy,
+                    Amount = m.Amounttt,
+                    Date = m.Dateee.ToString(),
+                    Remark = m.Remarkkk
+                }).ToPagedList(currentPage, pagesize);
+
+            ViewBag.year = year;
+            ViewBag.month = month;
+            return PartialView("BalanceList", result);
         }
 
         public ActionResult About()
